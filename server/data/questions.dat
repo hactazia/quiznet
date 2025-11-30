@@ -1,0 +1,172 @@
+# Culture Générale - Facile
+Culture Générale;easy;qcm;Quelle est la capitale de la France ?;Lyon,Paris,Marseille,Bordeaux;1;Paris est la capitale de la France depuis des siècles.
+Culture Générale;easy;boolean;Le soleil se lève à l'est.;;1;Le soleil se lève toujours à l'est et se couche à l'ouest.
+Culture Générale;easy;text;Combien y a-t-il de jours dans une semaine ? (en chiffre);;7,sept;Une semaine compte 7 jours.
+Culture Générale;easy;qcm;Quelle est la couleur du ciel par temps clair ?;Rouge,Vert,Bleu,Jaune;2;
+Culture Générale;easy;boolean;L'eau bout à 100 degrés Celsius au niveau de la mer.;;1;
+Culture Générale;easy;qcm;Combien de continents y a-t-il sur Terre ?;5,6,7,8;2;
+Culture Générale;easy;boolean;La Tour Eiffel se trouve à Londres.;;0;
+Culture Générale;easy;text;Quelle est la plus grande planète du système solaire ?;;Jupiter;
+Culture Générale;easy;qcm;Quel animal est le symbole de l'Australie ?;Koala,Kangourou,Émeu,Wombat;1;
+Culture Générale;easy;boolean;L'Amazone est le plus long fleuve du monde.;;0;Le Nil est le plus long.
+Culture Générale;easy;qcm;Combien de côtés a un hexagone ?;4,5,6,8;2;
+Culture Générale;easy;text;Quel est le métal le plus léger ?;;Lithium;
+Culture Générale;easy;boolean;Les dauphins sont des poissons.;;0;Ce sont des mammifères.
+Culture Générale;easy;qcm;Quelle est la langue la plus parlée au monde ?;Anglais,Espagnol,Mandarin,Hindi;2;
+Culture Générale;easy;boolean;Le Sahara est le plus grand désert du monde.;;0;L'Antarctique est plus grand.
+
+# Culture Générale - Moyen
+Culture Générale;medium;qcm;Quel est le plus grand océan du monde ?;Atlantique,Indien,Arctique,Pacifique;3;
+Culture Générale;medium;text;Quel est le symbole chimique de l'or ?;;Au;
+Culture Générale;medium;qcm;Combien de planètes composent notre système solaire ?;7,8,9,10;1;
+Culture Générale;medium;boolean;La Grande Muraille de Chine est visible depuis l'espace à l'œil nu.;;0;
+Culture Générale;medium;qcm;Quelle est la monnaie du Japon ?;Yuan,Won,Yen,Baht;2;
+Culture Générale;medium;qcm;Quel pays a la plus grande population ?;États-Unis,Inde,Chine,Indonésie;2;
+Culture Générale;medium;boolean;Vénus est la planète la plus chaude du système solaire.;;1;
+Culture Générale;medium;text;Quel gaz représente environ 78% de l'atmosphère terrestre ?;;Azote,N2;
+Culture Générale;medium;qcm;Quelle est la capitale de l'Australie ?;Sydney,Melbourne,Canberra,Perth;2;
+Culture Générale;medium;boolean;Le son se propage plus vite dans l'eau que dans l'air.;;1;
+Culture Générale;medium;qcm;Quel est le plus petit pays du monde ?;Monaco,Vatican,Saint-Marin,Liechtenstein;1;
+Culture Générale;medium;text;Quel est l'élément chimique le plus abondant dans l'univers ?;;Hydrogène,H;
+Culture Générale;medium;boolean;Les éclairs peuvent frapper deux fois au même endroit.;;1;
+Culture Générale;medium;qcm;Combien d'os compte le corps humain adulte ?;186,206,226,246;1;
+Culture Générale;medium;text;Quel est le plus grand mammifère terrestre ?;;Éléphant,Elephant;
+
+# Culture Générale - Difficile
+Culture Générale;hard;text;En quelle année a eu lieu la Révolution française ?;;1789;
+Culture Générale;hard;qcm;Quel philosophe a écrit 'Critique de la raison pure' ?;Hegel,Kant,Nietzsche,Descartes;1;
+Culture Générale;hard;boolean;Le mont Everest est le plus haut sommet mesuré depuis le centre de la Terre.;;0;
+Culture Générale;hard;qcm;Quel scientifique a découvert la pénicilline ?;Pasteur,Fleming,Koch,Jenner;1;
+Culture Générale;hard;boolean;La lumière du soleil met environ 8 minutes à atteindre la Terre.;;1;
+Culture Générale;hard;text;Quel est le nom du plus grand océan de Saturne's lune Titan ?;;Kraken Mare,Kraken;
+Culture Générale;hard;qcm;Combien de vertèbres possède une girafe ?;7,14,21,28;0;Comme tous les mammifères.
+Culture Générale;hard;boolean;Le diamant est la substance naturelle la plus dure.;;1;
+Culture Générale;hard;text;Quelle est la capitale du Bhoutan ?;;Thimphou,Thimphu;
+Culture Générale;hard;qcm;Quel élément a le symbole 'W' dans le tableau périodique ?;Tungstène,Wolfram,Titane,Wattium;0;W vient de Wolfram.
+
+# Informatique - Facile
+Informatique;easy;qcm;Que signifie CPU ?;Central Processing Unit,Computer Personal Unit,Central Power Unit,Computer Processing Unit;0;
+Informatique;easy;boolean;HTML est un langage de programmation.;;0;
+Informatique;easy;text;Quel est le langage créé par Guido van Rossum ?;;Python;
+Informatique;easy;qcm;Combien de bits dans un octet ?;4,8,16,32;1;
+Informatique;easy;boolean;Linux est un système d'exploitation open source.;;1;
+Informatique;easy;qcm;Quel est le créateur de Facebook ?;Bill Gates,Mark Zuckerberg,Steve Jobs,Elon Musk;1;
+Informatique;easy;boolean;RAM signifie Random Access Memory.;;1;
+Informatique;easy;text;Quel langage utilise des balises comme <html> et <body> ?;;HTML;
+Informatique;easy;qcm;Quelle entreprise a créé Windows ?;Apple,Google,Microsoft,IBM;2;
+Informatique;easy;boolean;Un gigaoctet contient 1000 mégaoctets.;;0;C'est 1024 en binaire.
+Informatique;easy;qcm;Que signifie URL ?;Universal Resource Locator,Uniform Resource Locator,Universal Reference Link,Uniform Reference Locator;1;
+Informatique;easy;text;Quel est le langage de programmation créé par Brendan Eich ?;;JavaScript,JS;
+Informatique;easy;boolean;Le premier ordinateur s'appelait ENIAC.;;1;
+Informatique;easy;qcm;Quel est le système d'exploitation mobile d'Apple ?;Android,iOS,Windows Phone,BlackBerry OS;1;
+Informatique;easy;boolean;CSS est utilisé pour styliser les pages web.;;1;
+
+# Informatique - Moyen
+Informatique;medium;qcm;Quel protocole est utilisé pour le transfert sécurisé de fichiers ?;HTTP,FTP,SFTP,SMTP;2;
+Informatique;medium;text;Quel port utilise par défaut le protocole HTTP ?;;80;
+Informatique;medium;qcm;TCP est un protocole...;Sans connexion,Orienté connexion,De routage,De diffusion;1;
+Informatique;medium;boolean;Une adresse IPv4 est composée de 128 bits.;;0;
+Informatique;medium;qcm;Quel langage est principalement utilisé pour le développement Android natif ?;Swift,Kotlin,C#,Ruby;1;
+Informatique;medium;qcm;Quel design pattern est Singleton ?;Créationnel,Structurel,Comportemental,Architectural;0;
+Informatique;medium;boolean;Git a été créé par Linus Torvalds.;;1;
+Informatique;medium;text;Quel port utilise HTTPS par défaut ?;;443;
+Informatique;medium;qcm;Quelle base de données utilise le langage SQL ?;MongoDB,Redis,MySQL,Cassandra;2;
+Informatique;medium;boolean;JSON est dérivé de JavaScript.;;1;
+Informatique;medium;qcm;Quel protocole est utilisé pour l'envoi d'emails ?;POP3,IMAP,SMTP,HTTP;2;
+Informatique;medium;text;Quel est le nom du noyau Linux ?;;Linux,linux;
+Informatique;medium;boolean;Une adresse MAC est unique pour chaque appareil réseau.;;1;
+Informatique;medium;qcm;Combien de couches a le modèle OSI ?;4,5,6,7;3;
+Informatique;medium;text;Quel langage est utilisé pour les requêtes en base de données relationnelle ?;;SQL;
+
+# Informatique - Difficile
+Informatique;hard;qcm;Quelle est la complexité temporelle moyenne du tri rapide (quicksort) ?;O(n),O(n log n),O(n²),O(log n);1;
+Informatique;hard;text;Quel syscall Unix permet de créer un processus enfant ?;;fork;
+Informatique;hard;boolean;Le problème du voyageur de commerce est NP-complet.;;1;
+Informatique;hard;qcm;Quel algorithme de hachage produit une empreinte de 256 bits ?;MD5,SHA-1,SHA-256,CRC32;2;
+Informatique;hard;boolean;Le problème de l'arrêt (Halting Problem) est décidable.;;0;
+Informatique;hard;text;Quel est le nom de l'algorithme de recherche de chemin le plus court de Dijkstra ?;;Dijkstra;
+Informatique;hard;qcm;Quelle structure de données utilise LIFO ?;Queue,Stack,Heap,Tree;1;
+Informatique;hard;boolean;TCP garantit l'ordre de livraison des paquets.;;1;
+Informatique;hard;text;Quel est le port par défaut de SSH ?;;22;
+Informatique;hard;qcm;Quelle est la complexité de la recherche dans une table de hachage (cas moyen) ?;O(1),O(log n),O(n),O(n²);0;
+Informatique;hard;boolean;WebSocket utilise une connexion persistante bidirectionnelle.;;1;
+Informatique;hard;text;Quel est le nom du protocole de consensus utilisé par Bitcoin ?;;Proof of Work,PoW;
+
+# Histoire - Facile
+Histoire;easy;qcm;Qui a découvert l'Amérique en 1492 ?;Vasco de Gama,Christophe Colomb,Marco Polo,Magellan;1;
+Histoire;easy;boolean;La Seconde Guerre mondiale a commencé en 1939.;;1;
+Histoire;easy;text;Quel pharaon est associé à la pyramide de Gizeh ?;;Khéops,Kheops,Cheops;
+Histoire;easy;qcm;Qui a peint la Joconde ?;Michel-Ange,Raphaël,Léonard de Vinci,Botticelli;2;
+Histoire;easy;boolean;Jules César était un empereur romain.;;0;Il était dictateur, pas empereur.
+Histoire;easy;text;Dans quel pays se trouve la Grande Muraille ?;;Chine;
+Histoire;easy;qcm;Quelle civilisation a construit Machu Picchu ?;Maya,Aztèque,Inca,Olmèque;2;
+Histoire;easy;boolean;Cléopâtre était égyptienne de naissance.;;0;Elle était grecque (ptolémaïque).
+Histoire;easy;qcm;En quelle année Christophe Colomb a-t-il découvert l'Amérique ?;1482,1492,1502,1512;1;
+Histoire;easy;text;Quel pays a offert la Statue de la Liberté aux États-Unis ?;;France;
+Histoire;easy;boolean;Les pyramides de Gizeh ont été construites par des esclaves.;;0;Par des ouvriers payés.
+Histoire;easy;qcm;Qui était le premier président des États-Unis ?;Lincoln,Jefferson,Washington,Adams;2;
+Histoire;easy;boolean;La Révolution française a eu lieu au 18ème siècle.;;1;
+
+# Histoire - Moyen
+Histoire;medium;qcm;Quel empire a construit le Colisée de Rome ?;Empire grec,Empire romain,Empire perse,Empire byzantin;1;
+Histoire;medium;text;En quelle année l'homme a-t-il marché sur la Lune pour la première fois ?;;1969;
+Histoire;medium;boolean;Napoléon Bonaparte est mort sur l'île de Sainte-Hélène.;;1;
+Histoire;medium;qcm;Quel événement a déclenché la Première Guerre mondiale ?;Assassinat de l'archiduc François-Ferdinand,Invasion de la Pologne,Révolution russe,Traité de Versailles;0;
+Histoire;medium;boolean;L'Empire romain d'Occident est tombé en 476.;;1;
+Histoire;medium;text;Quel navigateur a réalisé le premier tour du monde ?;;Magellan;
+Histoire;medium;qcm;Quelle guerre a opposé le Nord et le Sud des États-Unis ?;Guerre d'indépendance,Guerre de Sécession,Guerre hispano-américaine,Guerre de 1812;1;
+Histoire;medium;boolean;Alexandre le Grand est mort à 32 ans.;;1;
+Histoire;medium;text;En quelle année le mur de Berlin est-il tombé ?;;1989;
+Histoire;medium;qcm;Qui a été le premier homme dans l'espace ?;Neil Armstrong,Youri Gagarine,John Glenn,Alan Shepard;1;
+Histoire;medium;boolean;Jeanne d'Arc a été brûlée à Rouen.;;1;
+Histoire;medium;qcm;Quel pharaon a construit le temple d'Abou Simbel ?;Toutânkhamon,Ramsès II,Khéops,Akhenaton;1;
+Histoire;medium;text;Quel empereur a divisé l'Empire romain en deux ?;;Dioclétien,Diocletien;
+
+# Histoire - Difficile
+Histoire;hard;qcm;Quel traité a mis fin à la Première Guerre mondiale ?;Traité de Paris,Traité de Versailles,Traité de Westphalie,Traité de Vienne;1;
+Histoire;hard;text;Quel roi de France a été surnommé 'le Roi Soleil' ?;;Louis XIV,Louis 14;
+Histoire;hard;boolean;La guerre de Cent Ans a duré exactement 100 ans.;;0;
+Histoire;hard;qcm;En quelle année a eu lieu la bataille de Hastings ?;1016,1066,1166,1216;1;
+Histoire;hard;boolean;La dynastie Ming a précédé la dynastie Qing en Chine.;;1;
+Histoire;hard;text;Quel général carthaginois a traversé les Alpes avec des éléphants ?;;Hannibal;
+Histoire;hard;qcm;Quel empire a été renversé lors de la Révolution de 1917 en Russie ?;Empire ottoman,Empire austro-hongrois,Empire russe,Empire allemand;2;
+Histoire;hard;boolean;Les Vikings ont atteint l'Amérique avant Christophe Colomb.;;1;
+Histoire;hard;text;Comment s'appelait le dernier tsar de Russie ?;;Nicolas II,Nicolas 2;
+Histoire;hard;qcm;Quelle bataille a marqué la fin des guerres napoléoniennes ?;Austerlitz,Waterloo,Trafalgar,Iéna;1;
+Histoire;hard;boolean;L'écriture cunéiforme a été inventée par les Égyptiens.;;0;Par les Sumériens.
+Histoire;hard;qcm;En quelle année Constantinople est-elle tombée aux mains des Ottomans ?;1353,1403,1453,1503;2;
+
+# Sciences - Facile
+Sciences;easy;qcm;Quel est le symbole chimique de l'eau ?;H2O,CO2,NaCl,O2;0;
+Sciences;easy;boolean;La Terre tourne autour du Soleil.;;1;
+Sciences;easy;text;Combien de pattes a une araignée ?;;8,huit;
+Sciences;easy;qcm;Quel organe pompe le sang dans le corps humain ?;Poumons,Foie,Cœur,Reins;2;
+Sciences;easy;boolean;Les plantes produisent de l'oxygène.;;1;
+Sciences;easy;qcm;Quelle planète est surnommée la planète rouge ?;Vénus,Mars,Jupiter,Saturne;1;
+Sciences;easy;text;Quel gaz respirons-nous principalement ?;;Oxygène,O2;
+Sciences;easy;boolean;Le son peut se propager dans le vide.;;0;
+Sciences;easy;qcm;Combien de dents a un adulte humain ?;28,30,32,34;2;
+Sciences;easy;boolean;L'ADN a une structure en double hélice.;;1;
+
+# Sciences - Moyen
+Sciences;medium;qcm;Quelle est l'unité de mesure de la force ?;Joule,Watt,Newton,Pascal;2;
+Sciences;medium;boolean;Les électrons ont une charge positive.;;0;Ils sont négatifs.
+Sciences;medium;text;Quel est le nom de la galaxie où se trouve la Terre ?;;Voie lactée,Voie Lactee;
+Sciences;medium;qcm;Quel scientifique a formulé la théorie de la relativité ?;Newton,Einstein,Hawking,Bohr;1;
+Sciences;medium;boolean;Le pH de l'eau pure est 7.;;1;
+Sciences;medium;text;Quel est le plus grand organe du corps humain ?;;Peau;
+Sciences;medium;qcm;Combien de chromosomes a une cellule humaine normale ?;23,46,48,92;1;
+Sciences;medium;boolean;Les atomes sont indivisibles.;;0;
+Sciences;medium;qcm;Quelle vitesse la lumière atteint-elle dans le vide ?;300 000 km/s,150 000 km/s,500 000 km/s,1 000 000 km/s;0;
+Sciences;medium;text;Quel est le nom du processus par lequel les plantes fabriquent leur nourriture ?;;Photosynthèse,Photosynthese;
+
+# Sciences - Difficile
+Sciences;hard;qcm;Quel est le nombre d'Avogadro (ordre de grandeur) ?;6×10²³,6×10²⁰,6×10²⁶,6×10¹⁸;0;
+Sciences;hard;boolean;Un trou noir peut émettre de la radiation (radiation de Hawking).;;1;
+Sciences;hard;text;Quel est le nom de la particule responsable de la masse ?;;Boson de Higgs,Higgs;
+Sciences;hard;qcm;Quelle est la constante de Planck (ordre de grandeur) ?;6,6×10⁻³⁴ J·s,6,6×10⁻²⁴ J·s,6,6×10⁻¹⁴ J·s,6,6×10⁻⁴⁴ J·s;0;
+Sciences;hard;boolean;L'antimatière existe réellement.;;1;
+Sciences;hard;text;Quel est le nom de la force qui maintient les quarks ensemble ?;;Force forte,Interaction forte;
+Sciences;hard;qcm;Combien de dimensions possède la théorie des cordes ?;4,10,11,26;2;
+Sciences;hard;boolean;Un neutrino peut traverser la Terre sans interagir.;;1;
+Sciences;hard;qcm;Quel élément a le plus grand nombre atomique naturel ?;Plutonium,Uranium,Radium,Thorium;1;

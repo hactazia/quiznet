@@ -1,0 +1,95 @@
+stages:
+  - build
+  - package
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+# Server
+
+build-server-linux:
+  stage: build
+  image: gcc:latest
+  before_script:
+    - apt-get update && apt-get install -y nodejs npm make
+  script:
+    - cd server
+    - npm run build:linux
+    - mkdir -p ../artifacts/server-linux
+    - cp quiznet_server ../artifacts/server-linux/
+    - cp -r data ../artifacts/server-linux/ || true
+  artifacts:
+    name: "quiznet-server-linux-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - artifacts/server-linux/
+    expire_in: 1 week
+
+build-server-windows:
+  stage: build
+  image: dockcross/windows-static-x64:latest
+  script:
+    - cd server
+    - npm run build:win
+    - mkdir -p ../artifacts/server-windows
+    - cp quiznet_server.exe ../artifacts/server-windows/
+    - cp -r data ../artifacts/server-windows/ || true
+  artifacts:
+    name: "quiznet-server-windows-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - artifacts/server-windows/
+    expire_in: 1 week
+
+# Client
+
+build-client-linux:
+  stage: build
+  image: electronuserland/builder:wine
+  script:
+    - cd client
+    - npm ci
+    - npm run build:linux
+    - mkdir -p ../artifacts/client-linux
+    - cp -r dist/*.AppImage ../artifacts/client-linux/ || true
+    - cp -r dist/*.deb ../artifacts/client-linux/ || true
+    - cp -r dist/*.rpm ../artifacts/client-linux/ || true
+    - cp -r dist/linux-unpacked ../artifacts/client-linux/ || true
+  artifacts:
+    name: "quiznet-client-linux-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - artifacts/client-linux/
+    expire_in: 1 week
+
+build-client-windows:
+  stage: build
+  image: electronuserland/builder:wine
+  script:
+    - cd client
+    - npm ci
+    - npm run build:win
+    - mkdir -p ../artifacts/client-windows
+    - cp -r dist/*.exe ../artifacts/client-windows/ || true
+    - cp -r dist/win-unpacked ../artifacts/client-windows/ || true
+  artifacts:
+    name: "quiznet-client-windows-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - artifacts/client-windows/
+    expire_in: 1 week
+
+# Package
+
+package-all:
+  stage: package
+  image: alpine:latest
+  needs:
+    - build-server-linux
+    - build-server-windows
+    - build-client-linux
+    - build-client-windows
+  script:
+    - echo "All artifacts packaged successfully"
+    - ls -la artifacts/
+  artifacts:
+    name: "quiznet-all-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - artifacts/
+    expire_in: 1 month

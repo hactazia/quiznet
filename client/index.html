@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; script-src 'self' https://cdn.jsdelivr.net; font-src 'self' https://cdn.jsdelivr.net">
+    <title>QuizNet</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body data-bs-theme="dark">
+    <div id="app" class="container-fluid">
+        <div id="connection-screen" class="screen active">
+            <div class="row justify-content-center align-items-center min-vh-100">
+                <div class="col-md-6 col-lg-5">
+                    <div class="text-center mb-4">
+                        <h1 class="display-4 fw-bold"><i class="bi bi-bullseye"></i> QuizNet</h1>
+                        <p class="text-secondary">Quiz Multijoueur</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Connexion au serveur</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="server-list" class="server-list mb-3">
+                                <p class="text-secondary text-center py-3">Recherche de serveurs...</p>
+                            </div>
+                            <button id="refresh-servers" class="btn btn-outline-secondary w-100 mb-4">
+                                Actualiser
+                            </button>
+                            <hr>
+                            <h6 class="text-secondary mb-3">Connexion manuelle</h6>
+                            <div class="row g-2">
+                                <div class="col-5">
+                                    <input type="text" id="server-ip" class="form-control" placeholder="Adresse IP"
+                                        value="127.0.0.1">
+                                </div>
+                                <div class="col-3">
+                                    <input type="number" id="server-port" class="form-control" placeholder="Port"
+                                        value="5556">
+                                </div>
+                                <div class="col-4">
+                                    <button id="connect-manual" class="btn btn-primary w-100">Connexion</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="login-screen" class="screen">
+            <div class="row justify-content-center align-items-center min-vh-100">
+                <div class="col-md-5 col-lg-4">
+                    <div class="text-center mb-4">
+                        <h2><i class="bi bi-bullseye"></i> QuizNet</h2>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <ul class="nav nav-tabs card-header-tabs">
+                                <li class="nav-item">
+                                    <button class="nav-link active tab" data-tab="login">Connexion</button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="nav-link tab" data-tab="register">Inscription</button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div id="login-tab" class="tab-content active">
+                                <div class="mb-3">
+                                    <label for="login-pseudo" class="form-label">Pseudo</label>
+                                    <input type="text" class="form-control" id="login-pseudo"
+                                        placeholder="Votre pseudo">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="login-password" class="form-label">Mot de passe</label>
+                                    <input type="password" class="form-control" id="login-password"
+                                        placeholder="Votre mot de passe">
+                                </div>
+                                <button id="login-btn" class="btn btn-primary w-100">Se connecter</button>
+                            </div>
+
+                            <div id="register-tab" class="tab-content">
+                                <div class="mb-3">
+                                    <label for="register-pseudo" class="form-label">Pseudo</label>
+                                    <input type="text" class="form-control" id="register-pseudo"
+                                        placeholder="Choisissez un pseudo">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="register-password" class="form-label">Mot de passe</label>
+                                    <input type="password" class="form-control" id="register-password"
+                                        placeholder="Choisissez un mot de passe">
+                                </div>
+                                <button id="register-btn" class="btn btn-primary w-100">S'inscrire</button>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button id="disconnect-btn" class="btn btn-outline-secondary w-100">
+                                Déconnexion serveur
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="lobby-screen" class="screen">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary mb-4">
+                <div class="container-fluid">
+                    <span class="navbar-brand"><i class="bi bi-bullseye"></i> QuizNet</span>
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="text-light" id="user-pseudo">Joueur</span>
+                        <button id="logout-btn" class="btn btn-outline-secondary btn-sm">Déconnexion</button>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="container">
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <div class="card h-100">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Sessions disponibles</h5>
+                                <button id="refresh-sessions" class="btn btn-outline-secondary btn-sm">
+                                    ↻
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div id="sessions-list" class="sessions-list">
+                                    <p class="text-secondary text-center py-4">Aucune session disponible</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Créer une session</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="session-name" class="form-label">Nom de la session</label>
+                                    <input type="text" class="form-control" id="session-name" placeholder="Ma session">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Thèmes</label>
+                                    <div id="themes-list" class="themes-checkbox d-flex flex-wrap gap-2"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="session-difficulty" class="form-label">Difficulté</label>
+                                    <select class="form-select" id="session-difficulty">
+                                        <option value="easy">Facile</option>
+                                        <option value="medium" selected>Moyen</option>
+                                        <option value="hard">Difficile</option>
+                                        <option value="mixed">Mixte</option>
+                                    </select>
+                                </div>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-6">
+                                        <label for="session-questions" class="form-label">Questions</label>
+                                        <input type="number" class="form-control" id="session-questions" value="10"
+                                            min="10" max="50">
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="session-time" class="form-label">Temps (s)</label>
+                                        <input type="number" class="form-control" id="session-time" value="30" min="10"
+                                            max="60">
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-4">
+                                    <div class="col-6">
+                                        <label for="session-mode" class="form-label">Mode</label>
+                                        <select class="form-select" id="session-mode">
+                                            <option value="solo">Solo (Score)</option>
+                                            <option value="battle">Battle (Vies)</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="session-max" class="form-label">Joueurs max</label>
+                                        <input type="number" class="form-control" id="session-max" value="4" min="2"
+                                            max="10">
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-4 hidden" id="lives-option">
+                                    <div class="col-12">
+                                        <label for="session-lives" class="form-label">Nombre de vies</label>
+                                        <input type="number" class="form-control" id="session-lives" value="3" min="1"
+                                            max="10">
+                                    </div>
+                                </div>
+                                <button id="create-session" class="btn btn-primary w-100">
+                                    Créer la session
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="waiting-screen" class="screen">
+            <div class="row justify-content-center align-items-center min-vh-100">
+                <div class="col-md-8 col-lg-6">
+                    <div class="card">
+                        <div class="card-header text-center">
+                            <h4 class="mb-0">En attente de joueurs</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="bg-body-tertiary rounded p-3 mb-4">
+                                <div class="row text-center">
+                                    <div class="col-6">
+                                        <small class="text-secondary">Session</small>
+                                        <p class="mb-0 fw-bold" id="waiting-session-name">-</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-secondary">Mode</small>
+                                        <p class="mb-0 fw-bold" id="waiting-mode">-</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="waiting-players" class="d-flex flex-wrap justify-content-center gap-2 mb-4"></div>
+
+                            <div class="d-flex gap-2 justify-content-center mb-4">
+                                <button id="start-session" class="btn btn-success" disabled>
+                                    Démarrer la partie
+                                </button>
+                            </div>
+
+                            <div id="jokers-info" class="bg-body-tertiary rounded p-3 mb-3">
+                                <h6 class="text-secondary mb-3">Vos jokers</h6>
+                                <div class="d-flex justify-content-center gap-4">
+                                    <div class="text-center">
+                                        <div class="fs-3">🎲</div>
+                                        <small class="text-secondary">50/50</small>
+                                        <span class="badge bg-primary d-block mt-1" id="joker-fifty-count">1</span>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="fs-3">⏭️</div>
+                                        <small class="text-secondary">Passer</small>
+                                        <span class="badge bg-primary d-block mt-1" id="joker-skip-count">1</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="lives-info" class="bg-body-tertiary rounded p-3 hidden">
+                                <h6 class="text-secondary mb-2">Vos vies</h6>
+                                <div id="lives-display" class="fs-4 text-center">❤️ ❤️ ❤️ ❤️</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="game-screen" class="screen">
+            <div class="container py-3">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+
+                        <div class="card mb-3">
+                            <div class="card-body py-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="text-secondary">
+                                        Question <span class="text-light fw-bold" id="question-num">1</span>/<span
+                                            id="question-total">10</span>
+                                    </div>
+                                    <div id="timer" class="timer fs-3 fw-bold text-info">30</div>
+                                    <div>
+                                        <span id="game-score" class="badge bg-secondary">Score: 0</span>
+                                        <span id="game-lives" class="badge bg-danger hidden">Vies: ❤️❤️❤️❤️</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="d-flex justify-content-center gap-2 mb-3">
+                            <button id="use-fifty" class="btn btn-outline-secondary joker-btn" data-type="fifty">
+                                🎲 50/50
+                            </button>
+                            <button id="use-skip" class="btn btn-outline-secondary joker-btn" data-type="skip">
+                                ⏭️ Passer
+                            </button>
+                        </div>
+
+
+                        <div class="card mb-4">
+                            <div class="card-body text-center">
+                                <div class="mb-3">
+                                    <span id="question-type" class="badge bg-secondary me-2">QCM</span>
+                                    <span id="question-difficulty" class="badge difficulty">Moyen</span>
+                                </div>
+                                <h4 id="question-text" class="mb-0">Question en cours...</h4>
+                            </div>
+                        </div>
+
+
+                        <div id="answers-container" class="row g-3"></div>
+
+                        <div id="text-answer-container" class="hidden">
+                            <div class="input-group">
+                                <input type="text" id="text-answer" class="form-control form-control-lg"
+                                    placeholder="Votre réponse">
+                                <button id="submit-text-answer" class="btn btn-primary">Valider</button>
+                            </div>
+                        </div>
+
+                        <div id="boolean-container" class="row g-3 hidden">
+                            <div class="col-6">
+                                <button class="btn btn-outline-success btn-lg w-100 answer-btn boolean"
+                                    data-answer="true">
+                                    Vrai
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <button class="btn btn-outline-danger btn-lg w-100 answer-btn boolean"
+                                    data-answer="false">
+                                    Faux
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="results-screen" class="screen">
+            <div class="row justify-content-center align-items-center min-vh-100">
+                <div class="col-md-6 col-lg-5">
+                    <div class="card">
+                        <div class="card-header text-center">
+                            <h5 class="mb-0">Résultats de la question</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="correct-answer" class="alert alert-success"></div>
+                            <div id="explanation" class="alert alert-info hidden"></div>
+                            <div id="question-results" class="mb-3"></div>
+                            <p class="text-secondary text-center small mb-0">Question suivante dans quelques secondes...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="final-screen" class="screen">
+            <div class="row justify-content-center align-items-center min-vh-100">
+                <div class="col-md-6 col-lg-5">
+                    <div class="card">
+                        <div class="card-header text-center">
+                            <h5 class="mb-0">Partie Terminée</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="winner-banner" class="alert alert-warning text-center fs-5 fw-bold hidden"></div>
+                            <h5 class="mb-3">Classement</h5>
+                            <div id="final-ranking" class="mb-4"></div>
+                            <button id="back-to-lobby" class="btn btn-primary w-100">
+                                Retour au lobby
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
+        <div id="toast" class="toast align-items-center border-0" role="alert">
+            <div class="d-flex">
+                <div class="toast-body"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="renderer.js"></script>
+</body>
+
+</html>

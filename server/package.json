@@ -1,0 +1,13 @@
+{
+    
+  "name": "quiznet-server",
+  "version": "1.0.0",
+  "scripts": {
+    "clean": "make clean",
+    "clean:win": "make clean PLATFORM=windows",
+    "clean:linux": "make clean PLATFORM=linux",
+    "build": "make",
+    "build:win": "make PLATFORM=windows",
+    "build:linux": "make PLATFORM=linux"
+  }
+}

@@ -1,0 +1,29 @@
+# Compiled files
+*.o
+*.obj
+*.exe
+*.out
+*.app
+
+# Build directory
+obj/
+obj_linux/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+accounts.dat
+quiznet_server
+quiznet_server.exe
+
+# Debug
+*.dSYM/
+*.log
+
+# OS generated
+.DS_Store
+Thumbs.db
