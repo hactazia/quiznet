@@ -55,11 +55,7 @@ OBJS = $(OBJ_DIR)/main.o $(OBJ_DIR)/server.o $(OBJ_DIR)/protocol.o \
 all: $(OBJ_DIR) $(TARGET)
 
 $(OBJ_DIR):
-ifeq ($(OS),Windows_NT)
-	if not exist $(OBJ_DIR) $(MKDIR) $(OBJ_DIR)
-else
 	$(MKDIR) $(OBJ_DIR)
-endif
 
 $(TARGET): $(OBJS)
 	$(CC) $(OBJS) -o $(TARGET) $(LDFLAGS)
