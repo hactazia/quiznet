@@ -72,24 +72,133 @@ void str_to_lower(char *str) {
 }
 
 /**
- * Compares two strings case-insensitively
- * 
- * Performs a character-by-character comparison of two strings,
- * ignoring case differences.
- * 
- * @param a First string to compare
- * @param b Second string to compare
- * @return true if strings are equal (ignoring case), false otherwise
+ * Normalizes a character
  */
-bool str_equals_ignore_case(const char *a, const char *b) {
-    while (*a && *b) {
-        if (tolower((unsigned char)*a) != tolower((unsigned char)*b)) {
-            return false;
-        }
-        a++;
-        b++;
+static char normalize_accent(unsigned char c, unsigned char next, int* skip) {
+  *skip = 0;
+
+  // UTF-8
+  if (c == 0xC3) {
+    *skip = 1;
+    switch (next) {
+      // Lowercase
+      case 0xA0:
+      case 0xA1:
+      case 0xA2:
+      case 0xA3:
+      case 0xA4:
+      case 0xA5:  // àáâãäå
+        return 'a';
+      case 0xA8:
+      case 0xA9:
+      case 0xAA:
+      case 0xAB:  // èéêë
+        return 'e';
+      case 0xAC:
+      case 0xAD:
+      case 0xAE:
+      case 0xAF:  // ìíîï
+        return 'i';
+      case 0xB2:
+      case 0xB3:
+      case 0xB4:
+      case 0xB5:
+      case 0xB6:  // òóôõö
+        return 'o';
+      case 0xB9:
+      case 0xBA:
+      case 0xBB:
+      case 0xBC:  // ùúûü
+        return 'u';
+      case 0xBD:
+      case 0xBF:  // ýÿ
+        return 'y';
+      case 0xA7:  // ç
+        return 'c';
+      case 0xB1:  // ñ
+        return 'n';
+      // Uppercase
+      case 0x80:
+      case 0x81:
+      case 0x82:
+      case 0x83:
+      case 0x84:
+      case 0x85:  // ÀÁÂÃÄÅ
+        return 'a';
+      case 0x88:
+      case 0x89:
+      case 0x8A:
+      case 0x8B:  // ÈÉÊË
+        return 'e';
+      case 0x8C:
+      case 0x8D:
+      case 0x8E:
+      case 0x8F:  // ÌÍÎÏ
+        return 'i';
+      case 0x92:
+      case 0x93:
+      case 0x94:
+      case 0x95:
+      case 0x96:  // ÒÓÔÕÖ
+        return 'o';
+      case 0x99:
+      case 0x9A:
+      case 0x9B:
+      case 0x9C:  // ÙÚÛÜ
+        return 'u';
+      case 0x9D:  // Ý
+        return 'y';
+      case 0x87:  // Ç
+        return 'c';
+      case 0x91:  // Ñ
+        return 'n';
+      default:
+        *skip = 0;
+        return (char)c;
     }
-    return *a == *b;
+  }
+
+  // Latin-1
+  if (c >= 0xC0 && c <= 0xC5) return 'a';               // ÀÁÂÃÄÅ
+  if (c >= 0xE0 && c <= 0xE5) return 'a';               // àáâãäå
+  if (c >= 0xC8 && c <= 0xCB) return 'e';               // ÈÉÊË
+  if (c >= 0xE8 && c <= 0xEB) return 'e';               // èéêë
+  if (c >= 0xCC && c <= 0xCF) return 'i';               // ÌÍÎÏ
+  if (c >= 0xEC && c <= 0xEF) return 'i';               // ìíîï
+  if (c >= 0xD2 && c <= 0xD6) return 'o';               // ÒÓÔÕÖ
+  if (c >= 0xF2 && c <= 0xF6) return 'o';               // òóôõö
+  if (c >= 0xD9 && c <= 0xDC) return 'u';               // ÙÚÛÜ
+  if (c >= 0xF9 && c <= 0xFC) return 'u';               // ùúûü
+  if (c == 0xC7) return 'c';                            // Ç
+  if (c == 0xE7) return 'c';                            // ç
+  if (c == 0xD1) return 'n';                            // Ñ
+  if (c == 0xF1) return 'n';                            // ñ
+  if (c == 0xDD || c == 0xFD || c == 0xFF) return 'y';  // ÝýÿŸ
+
+  return (char)c;
+}
+
+/**
+ * Compares two strings ignoring case and accents
+ */
+bool str_equals(const char* a, const char* b) {
+    while (*a && *b) {
+    int skip_a = 0, skip_b = 0;
+    unsigned char ca = (unsigned char)*a;
+    unsigned char cb = (unsigned char)*b;
+    unsigned char next_a = (unsigned char)*(a + 1);
+    unsigned char next_b = (unsigned char)*(b + 1);
+
+    char na = tolower((unsigned char)normalize_accent(ca, next_a, &skip_a));
+    char nb = tolower((unsigned char)normalize_accent(cb, next_b, &skip_b));
+
+    if (na != nb) return false;
+
+    a += 1 + skip_a;
+    b += 1 + skip_b;
+    }
+
+  return *a == '\0' && *b == '\0';
 }
 
 /**

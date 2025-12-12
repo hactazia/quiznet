@@ -7,6 +7,7 @@
 void log_msg(const char *tag, const char *format, ...);
 void str_to_lower(char *str);
 bool str_equals_ignore_case(const char *a, const char *b);
+bool str_equals(const char *a, const char *b);
 void trim_whitespace(char *str);
 void sha256_hash(const char *input, char *output);
 void init_random(void);
