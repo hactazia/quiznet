@@ -42,7 +42,6 @@
  */
 #define UDP_PORT 5555                /**< UDP port for server discovery broadcasts */
 #define DEFAULT_TCP_PORT 5556        /**< Default TCP port for game connections */
-#define SERVER_NAME "QuizNetServer"  /**< Server name for discovery responses */
 /** @} */
 
 /* ============================================================================
@@ -214,6 +213,9 @@ typedef struct {
  * Access to shared resources is protected by mutexes.
  */
 typedef struct {
+    /* Server identity */
+    char server_name[64];          /**< Server name for discovery */
+    
     /* Network sockets */
     int tcp_socket;                /**< Main TCP listening socket */
     int udp_socket;                /**< UDP socket for discovery broadcasts */

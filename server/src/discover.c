@@ -26,7 +26,7 @@ void send_discovery_response(ServerState* state,
                              socklen_t addr_len) {
   char response[256];
   snprintf(response, sizeof(response), "hello i'm a quiznet server:%s:%d",
-           SERVER_NAME, state->tcp_port);
+           state->server_name, state->tcp_port);
 
   log_msg("DISCOVER", "Sending response: '%s'", response);
   sendto(state->udp_socket, response, strlen(response), 0,

@@ -26,18 +26,25 @@ void signal_handler(int sig) {
 
 void print_usage(const char* program) {
   printf("Usage: %s [options]\n", program);
-  printf("Options: --tcp <port>, -udp <port>, --help\n");
+  printf("Options:\n");
+  printf("  --tcp <port>   TCP port (default: %d)\n", DEFAULT_TCP_PORT);
+  printf("  --udp <port>   UDP port (default: %d)\n", DEFAULT_UDP_PORT);
+  printf("  --name <name>  Server name (default: QuizNet #XXXX)\n");
+  printf("  -h, --help     Show this help\n");
 }
 
 int main(int argc, char* argv[]) {
   int tcp_port = DEFAULT_TCP_PORT;
   int udp_port = DEFAULT_UDP_PORT;
+  char* custom_name = NULL;
 
   for (int i = 1; i < argc; i++)
     if (strcmp(argv[i], "--tcp") == 0) {
       if (i + 1 < argc) tcp_port = atoi(argv[++i]);
     } else if (strcmp(argv[i], "--udp") == 0) {
       if (i + 1 < argc) udp_port = atoi(argv[++i]);
+    } else if (strcmp(argv[i], "--name") == 0) {
+      if (i + 1 < argc) custom_name = argv[++i];
     } else if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
       print_usage(argv[0]);
       return 0;
@@ -59,11 +66,18 @@ int main(int argc, char* argv[]) {
   sigaction(SIGTERM, &sa, NULL);
 #endif
 
-  // Initialize server
   if (init_server(&server_state, tcp_port, udp_port) < 0) {
     printf("Failed to initialize server\n");
     return 1;
   }
+
+  if (custom_name) {
+    strncpy(server_state.server_name, custom_name,
+            sizeof(server_state.server_name) - 1);
+    server_state.server_name[sizeof(server_state.server_name) - 1] = '\0';
+  } else
+    snprintf(server_state.server_name, sizeof(server_state.server_name),
+             "QuizNet #%04d", rand() % 10000);
 
   run_server(&server_state);
   cleanup_server(&server_state);
