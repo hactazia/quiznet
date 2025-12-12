@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const net = require('net');
 const dgram = require('dgram');
+const os = require('os');
 
 let mainWindow = null;
 let tcpClient = null;
@@ -34,27 +35,22 @@ function createWindow() {
 
     mainWindow.on('closed', () => {
         mainWindow = null;
-        if (tcpClient) {
-            tcpClient.destroy();
-        }
+        tcpClient?.destroy();
     });
 }
 
 app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
+    if (process.platform !== 'darwin')
         app.quit();
-    }
 });
 
 app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
+    if (BrowserWindow.getAllWindows().length === 0)
         createWindow();
-    }
 });
 
-// Server discovery via UDP broadcast
 ipcMain.handle('discover-servers', async () => {
     return new Promise((resolve) => {
         const servers = [];
@@ -72,9 +68,8 @@ ipcMain.handle('discover-servers', async () => {
                 const parts = response.split(':');
                 if (parts.length >= 3) {
                     // Skip localhost responses
-                    if (rinfo.address === '127.0.0.1') {
+                    if (rinfo.address === '127.0.0.1')
                         return;
-                    }
 
                     const server = {
                         ip: rinfo.address,
@@ -90,8 +85,25 @@ ipcMain.handle('discover-servers', async () => {
         socket.bind(() => {
             socket.setBroadcast(true);
             const message = Buffer.from('looking for quiznet servers');
-            socket.send(message, 0, message.length, UDP_DISCOVERY_PORT, '255.255.255.255');
-            socket.send(message, 0, message.length, UDP_DISCOVERY_PORT, '127.0.0.1');
+
+            const interfaces = os.networkInterfaces();
+            const broadcastAddresses = new Set(['255.255.255.255']);
+
+            for (const name of Object.keys(interfaces))
+                for (const iface of interfaces[name])
+                    if (iface.family === 'IPv4' && !iface.internal) {
+                        const ipParts = iface.address.split('.').map(Number);
+                        const maskParts = iface.netmask.split('.').map(Number);
+                        const broadcastParts = ipParts.map((ip, i) => ip | (~maskParts[i] & 255));
+                        const broadcastAddr = broadcastParts.join('.');
+                        broadcastAddresses.add(broadcastAddr);
+                        console.log(`Interface ${name}: ${iface.address} -> broadcast ${broadcastAddr}`);
+                    }
+
+            for (const addr of broadcastAddresses) {
+                console.log(`Sending discovery to ${addr}:${UDP_DISCOVERY_PORT}`);
+                socket.send(message, 0, message.length, UDP_DISCOVERY_PORT, addr);
+            }
         });
 
         setTimeout(() => {
@@ -103,9 +115,7 @@ ipcMain.handle('discover-servers', async () => {
 
 ipcMain.handle('connect-server', async (event, { ip, port }) => {
     return new Promise((resolve, reject) => {
-        if (tcpClient) {
-            tcpClient.destroy();
-        }
+        tcpClient?.destroy();
 
         tcpClient = new net.Socket();
         let buffer = '';
@@ -123,33 +133,26 @@ ipcMain.handle('connect-server', async (event, { ip, port }) => {
                 const message = buffer.substring(0, newlineIndex);
                 buffer = buffer.substring(newlineIndex + 1);
 
-                if (message.trim()) {
+                if (message.trim())
                     try {
                         const json = JSON.parse(message);
-                        if (mainWindow) {
-                            mainWindow.webContents.send('server-message', json);
-                        }
+                        mainWindow?.webContents.send('server-message', json);
                     } catch (e) {
                         console.error('Failed to parse message:', message);
                     }
-                }
             }
         });
 
         tcpClient.on('error', (err) => {
             console.error('TCP error:', err);
             isConnected = false;
-            if (mainWindow) {
-                mainWindow.webContents.send('connection-error', err.message);
-            }
+            mainWindow?.webContents.send('connection-error', err.message);
             reject(err);
         });
 
         tcpClient.on('close', () => {
             isConnected = false;
-            if (mainWindow) {
-                mainWindow.webContents.send('connection-closed');
-            }
+            mainWindow?.webContents.send('connection-closed');
         });
     });
 });
@@ -163,30 +166,23 @@ ipcMain.handle('disconnect-server', () => {
     return { success: true };
 });
 
-ipcMain.handle('send-request', (event, { method, endpoint, data }) => {
-    return new Promise((resolve, reject) => {
-        if (!tcpClient || !isConnected) {
-            reject(new Error('Not connected to server'));
-            return;
-        }
+ipcMain.handle('send-request', (event, { method, endpoint, data }) => new Promise((resolve, reject) => {
+    if (!tcpClient || !isConnected) {
+        reject(new Error('Not connected to server'));
+        return;
+    }
 
-        let message;
-        if (method === 'POST') {
-            const body = data ? JSON.stringify(data) : '{}';
-            message = `${method} ${endpoint}\n${body}\n`;
-        } else message = `${method} ${endpoint}\n`;
+    let message;
+    if (method === 'POST') {
+        const body = data ? JSON.stringify(data) : '{}';
+        message = `${method} ${endpoint}\n${body}\n`;
+    } else message = `${method} ${endpoint}\n`;
 
-
-        tcpClient.write(message, (err) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve({ success: true });
-            }
-        });
+    tcpClient.write(message, (err) => {
+        if (err) {
+            reject(err);
+        } else resolve({ success: true });
     });
-});
+}));
 
-ipcMain.handle('is-connected', () => {
-    return isConnected;
-});
+ipcMain.handle('is-connected', () => isConnected);
