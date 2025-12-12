@@ -28,7 +28,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: quiznet-server-linux
-          path: server/quiznet_server
+          path: |
+            server/quiznet_server
+            server/data/questions.dat
           retention-days: 7
 
   build-server-windows:
@@ -55,7 +57,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: quiznet-server-windows
-          path: server/quiznet_server.exe
+          path: |
+            server/quiznet_server.exe
+            server/data/questions.dat
           retention-days: 7
 
   build-client-linux:
@@ -117,3 +121,42 @@ jobs:
           name: quiznet-client-windows
           path: client/dist/
           retention-days: 7
+
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: [build-server-linux, build-server-windows, build-client-linux, build-client-windows]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      
+      - name: Create ZIP archives
+        run: |
+          cd artifacts
+          zip -r quiznet-server-linux.zip quiznet-server-linux/
+          zip -r quiznet-server-windows.zip quiznet-server-windows/
+          zip -r quiznet-client-linux.zip quiznet-client-linux/
+          zip -r quiznet-client-windows.zip quiznet-client-windows/
+      
+      - name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+      
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: Build ${{ github.run_number }} - ${{ steps.date.outputs.date }}
+          draft: false
+          prerelease: false
+          files: |
+            artifacts/quiznet-server-linux.zip
+            artifacts/quiznet-server-windows.zip
+            artifacts/quiznet-client-linux.zip
+            artifacts/quiznet-client-windows.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
