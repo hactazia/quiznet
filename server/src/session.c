@@ -247,9 +247,14 @@ int leave_session(ServerState *state, Session *session, int client_id) {
     if (session->num_players == 0) {
         log_msg("SESSION", "No players left, ending session");
         session->status = SESSION_FINISHED;
+        pthread_mutex_unlock(&session->mutex);
+    } else if (session->num_players == 1 && session->status == SESSION_PLAYING) {
+        log_msg("SESSION", "Only 1 player left during game, ending session with results");
+        pthread_mutex_unlock(&session->mutex);
+        end_session(state, session);
+    } else {
+        pthread_mutex_unlock(&session->mutex);
     }
-    
-    pthread_mutex_unlock(&session->mutex);
     return 0;
 }
 
