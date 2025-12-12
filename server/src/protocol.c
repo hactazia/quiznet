@@ -46,7 +46,6 @@ void handle_request(ServerState *state, Client *client, const char *request) {
 
     if (json) {
         char *json_pretty = cJSON_Print(json);
-        log_msg("PROTOCOL", "Body: %s", json_pretty);
         free(json_pretty);
     }
     

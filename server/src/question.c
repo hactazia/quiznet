@@ -208,7 +208,7 @@ int load_questions(ServerState *state, const char *filename) {
  * @return Number of questions selected, -1 if not enough matching questions
  */
 int select_questions_for_session(ServerState *state, Session *session) {
-    log_msg("QUESTION", "select_questions_for_session() - need %d questions, difficulty=%d\n",
+    log_msg("QUESTION", "select_questions_for_session() - need %d questions, difficulty=%d",
            session->num_questions, session->difficulty);
     
     int matching[MAX_QUESTIONS];
@@ -234,7 +234,7 @@ int select_questions_for_session(ServerState *state, Session *session) {
     }
     
     if (num_matching < session->num_questions) {
-        log_msg("QUESTION", "select_questions_for_session() FAILED - only %d matching (need %d)\n",
+        log_msg("QUESTION", "select_questions_for_session() FAILED - only %d matching (need %d)",
                num_matching, session->num_questions);
         return -1;
     }
@@ -267,20 +267,20 @@ bool check_answer(Question *q, int answer_index, const char *text_answer, bool b
     switch (q->type) {
         case QUESTION_QCM:
             correct = (answer_index == q->correct_answer);
-            log_msg("QUESTION", "check_answer(QCM) - given=%d, expected=%d, correct=%s\n",
+            log_msg("QUESTION", "check_answer(QCM) - given=%d, expected=%d, correct=%s",
                    answer_index, q->correct_answer, correct ? "YES" : "NO");
             return correct;
             
         case QUESTION_BOOLEAN:
             correct = (bool_answer == (q->correct_answer == 1));
-            log_msg("QUESTION", "check_answer(BOOL) - given=%s, expected=%d, correct=%s\n",
+            log_msg("QUESTION", "check_answer(BOOL) - given=%s, expected=%d, correct=%s",
                    bool_answer ? "true" : "false", q->correct_answer, correct ? "YES" : "NO");
             return correct;
             
         case QUESTION_TEXT:
             for (int i = 0; i < q->num_text_answers; i++) {
-                if (str_equals_ignore_case(text_answer, q->text_answers[i])) {
-                    log_msg("QUESTION", "check_answer(TEXT) - given='%s', matched='%s', correct=YES\n",
+                if (str_equals(text_answer, q->text_answers[i])) {
+                    log_msg("QUESTION", "check_answer(TEXT) - given='%s', matched='%s', correct=YES",
                            text_answer, q->text_answers[i]);
                     return true;
                 }

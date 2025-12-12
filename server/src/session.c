@@ -31,12 +31,12 @@
 Session* create_session(ServerState *state, const char *name, int *theme_ids, int num_themes,
                         Difficulty difficulty, int num_questions, int time_limit,
                         GameMode mode, int initial_lives, int max_players, int creator_client_id) {
-    log_msg("SESSION", "create_session() - name='%s', themes=%d, difficulty=%d, questions=%d\n",
+    log_msg("SESSION", "create_session() - name='%s', themes=%d, difficulty=%d, questions=%d",
            name, num_themes, difficulty, num_questions);
     pthread_mutex_lock(&state->sessions_mutex);
     
     if (state->num_sessions >= MAX_SESSIONS) {
-        log_msg("SESSION", "create_session() FAILED - max sessions reached (%d)\n", MAX_SESSIONS);
+        log_msg("SESSION", "create_session() FAILED - max sessions reached (%d)", MAX_SESSIONS);
         pthread_mutex_unlock(&state->sessions_mutex);
         return NULL;
     }
@@ -46,7 +46,7 @@ Session* create_session(ServerState *state, const char *name, int *theme_ids, in
     for (int i = 0; i < MAX_SESSIONS; i++) {
         if (state->sessions[i].status == SESSION_FINISHED || state->sessions[i].id == 0) {
             session = &state->sessions[i];
-            log_msg("SESSION", "Found empty slot at index %d\n", i);
+            log_msg("SESSION", "Found empty slot at index %d", i);
             break;
         }
     }
@@ -78,7 +78,7 @@ Session* create_session(ServerState *state, const char *name, int *theme_ids, in
     session->creator_client_id = creator_client_id;
     session->current_question = -1;
     
-    log_msg("SESSION", "Session initialized: id=%d, selecting questions...\n", session->id);
+    log_msg("SESSION", "Session initialized: id=%d, selecting questions...", session->id);
     
     if (select_questions_for_session(state, session) < 0) {
         log_msg("SESSION", "create_session() FAILED - not enough matching questions");
@@ -88,7 +88,7 @@ Session* create_session(ServerState *state, const char *name, int *theme_ids, in
     }
     
     state->num_sessions++;
-    log_msg("SESSION", "Session created successfully: id=%d (total sessions: %d)\n", 
+    log_msg("SESSION", "Session created successfully: id=%d (total sessions: %d)", 
            session->id, state->num_sessions);
     
     pthread_mutex_unlock(&state->sessions_mutex);
@@ -109,7 +109,7 @@ Session* find_session(ServerState *state, int session_id) {
             return &state->sessions[i];
         }
     }
-    log_msg("SESSION", "find_session() - session %d not found\n", session_id);
+    log_msg("SESSION", "find_session() - session %d not found", session_id);
     return NULL;
 }
 
@@ -123,18 +123,18 @@ Session* find_session(ServerState *state, int session_id) {
  * @return 0 on success, -1 not waiting, -2 full, -3 already in session
  */
 int join_session(ServerState *state, Session *session, int client_id, const char *pseudo) {
-    log_msg("SESSION", "join_session() - client %d ('%s') joining session %d\n",
+    log_msg("SESSION", "join_session() - client %d ('%s') joining session %d",
            client_id, pseudo, session->id);
     pthread_mutex_lock(&session->mutex);
     
     if (session->status != SESSION_WAITING) {
-        log_msg("SESSION", "join_session() FAILED - session not waiting (status=%d)\n", session->status);
+        log_msg("SESSION", "join_session() FAILED - session not waiting (status=%d)", session->status);
         pthread_mutex_unlock(&session->mutex);
         return -1;
     }
     
     if (session->num_players >= session->max_players) {
-        log_msg("SESSION", "join_session() FAILED - session full (%d/%d)\n", 
+        log_msg("SESSION", "join_session() FAILED - session full (%d/%d)", 
                session->num_players, session->max_players);
         pthread_mutex_unlock(&session->mutex);
         return -2;
@@ -165,10 +165,10 @@ int join_session(ServerState *state, Session *session, int client_id, const char
     player->used_skip_this_question = false;
     
     session->num_players++;
-    log_msg("SESSION", "Player '%s' added (now %d/%d players)\n", 
+    log_msg("SESSION", "Player '%s' added (now %d/%d players)", 
            pseudo, session->num_players, session->max_players);
     
-    log_msg("SESSION", "Notifying %d other player(s)\n", session->num_players - 1);
+    log_msg("SESSION", "Notifying %d other player(s)", session->num_players - 1);
     for (int i = 0; i < session->num_players - 1; i++) {
         int other_client_id = session->players[i].client_id;
         
@@ -196,7 +196,7 @@ int join_session(ServerState *state, Session *session, int client_id, const char
  * @return 0 on success, -1 if player not in session
  */
 int leave_session(ServerState *state, Session *session, int client_id) {
-    log_msg("SESSION", "leave_session() - client %d leaving session %d\n", client_id, session->id);
+    log_msg("SESSION", "leave_session() - client %d leaving session %d", client_id, session->id);
     pthread_mutex_lock(&session->mutex);
     
     int player_index = -1;
@@ -216,7 +216,7 @@ int leave_session(ServerState *state, Session *session, int client_id) {
         return -1;
     }
     
-    log_msg("SESSION", "Removing player '%s' at index %d\n", leaving_pseudo, player_index);
+    log_msg("SESSION", "Removing player '%s' at index %d", leaving_pseudo, player_index);
     
     for (int i = player_index; i < session->num_players - 1; i++) {
         session->players[i] = session->players[i + 1];
@@ -225,11 +225,11 @@ int leave_session(ServerState *state, Session *session, int client_id) {
     
     if (client_id == session->creator_client_id && session->num_players > 0) {
         session->creator_client_id = session->players[0].client_id;
-        log_msg("SESSION", "New creator: client %d ('%s')\n", 
+        log_msg("SESSION", "New creator: client %d ('%s')", 
                session->creator_client_id, session->players[0].pseudo);
     }
     
-    log_msg("SESSION", "Notifying %d remaining player(s)\n", session->num_players);
+    log_msg("SESSION", "Notifying %d remaining player(s)", session->num_players);
     for (int i = 0; i < session->num_players; i++) {
         int other_client_id = session->players[i].client_id;
         
@@ -266,7 +266,7 @@ int leave_session(ServerState *state, Session *session, int client_id) {
  * @return 0 on success, -1 if not enough players
  */
 int start_session(ServerState *state, Session *session) {
-    log_msg("SESSION", "start_session() - session %d starting with %d players\n", 
+    log_msg("SESSION", "start_session() - session %d starting with %d players", 
            session->id, session->num_players);
     pthread_mutex_lock(&session->mutex);
     
@@ -280,7 +280,7 @@ int start_session(ServerState *state, Session *session) {
     session->current_question = 0;
     log_msg("SESSION", "Session status set to PLAYING, starting with question 0");
     
-    log_msg("SESSION", "Sending start notification to %d players\n", session->num_players);
+    log_msg("SESSION", "Sending start notification to %d players", session->num_players);
     for (int i = 0; i < session->num_players; i++) {
         cJSON *notify = cJSON_CreateObject();
         cJSON_AddStringToObject(notify, "action", "session/started");
@@ -322,7 +322,7 @@ SessionPlayer* find_session_player(Session *session, int client_id) {
             return &session->players[i];
         }
     }
-    log_msg("SESSION", "find_session_player() - client %d not found\n", client_id);
+    log_msg("SESSION", "find_session_player() - client %d not found", client_id);
     return NULL;
 }
 
@@ -380,7 +380,7 @@ void send_question_to_all(ServerState *state, Session *session) {
         return;
     }
     
-    log_msg("SESSION", "Sending question %d/%d: '%s'\n", 
+    log_msg("SESSION", "Sending question %d/%d: '%s'", 
            session->current_question + 1, session->num_questions, q->question);
     
     for (int i = 0; i < session->num_players; i++) {
@@ -396,7 +396,7 @@ void send_question_to_all(ServerState *state, Session *session) {
     int active_players = 0;
     for (int i = 0; i < session->num_players; i++) {
         if (session->players[i].eliminated) {
-            log_msg("SESSION", "  Skipping eliminated player '%s'\n", session->players[i].pseudo);
+            log_msg("SESSION", "  Skipping eliminated player '%s'", session->players[i].pseudo);
             continue;
         }
         active_players++;
@@ -423,7 +423,7 @@ void send_question_to_all(ServerState *state, Session *session) {
         cJSON_Delete(msg);
     }
     
-    log_msg("SESSION", "Question sent to %d active player(s)\n", active_players);
+    log_msg("SESSION", "Question sent to %d active player(s)", active_players);
     pthread_mutex_unlock(&session->mutex);
 }
 
@@ -440,7 +440,7 @@ void send_question_to_all(ServerState *state, Session *session) {
  */
 void process_answer(ServerState *state, Session *session, int client_id,
                    int answer_index, const char *text_answer, bool bool_answer, double response_time) {
-    log_msg("SESSION", "process_answer() - client %d, answer=%d, time=%.2f\n", 
+    log_msg("SESSION", "process_answer() - client %d, answer=%d, time=%.2f", 
            client_id, answer_index, response_time);
     pthread_mutex_lock(&session->mutex);
     

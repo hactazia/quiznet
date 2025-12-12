@@ -42,7 +42,7 @@ void send_discovery_response(ServerState* state,
  */
 void* udp_discovery_handler(void* arg) {
   ServerState* state = (ServerState*)arg;
-  log_msg("DISCOVER", "UDP discovery handler started on port %d\n",
+  log_msg("DISCOVER", "UDP discovery handler started on port %d",
          state->udp_port);
 
   char buffer[256];
