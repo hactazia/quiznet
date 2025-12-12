@@ -513,7 +513,6 @@ class QuizNetClient {
     }
 
     updateWaitingRoom(data) {
-        document.getElementById('waiting-session-name').textContent = data.name || 'Session';
         document.getElementById('waiting-mode').textContent = this.sessionMode === 'battle' ? 'Battle (Vies)' : 'Solo (Score)';
 
         const playersContainer = document.getElementById('waiting-players');
