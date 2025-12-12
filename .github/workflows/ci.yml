@@ -137,10 +137,10 @@ jobs:
       - name: Create ZIP archives
         run: |
           cd artifacts
-          zip -r quiznet-server-linux.zip quiznet-server-linux/
-          zip -r quiznet-server-windows.zip quiznet-server-windows/
-          zip -r quiznet-client-linux.zip quiznet-client-linux/
-          zip -r quiznet-client-windows.zip quiznet-client-windows/
+          cd quiznet-server-linux && zip -r ../quiznet-server-v${{ github.run_number }}-linux.zip . && cd ..
+          cd quiznet-server-windows && zip -r ../quiznet-server-v${{ github.run_number }}-windows.zip . && cd ..
+          cd quiznet-client-linux && zip -r ../quiznet-client-v${{ github.run_number }}-linux.zip . && cd ..
+          cd quiznet-client-windows && zip -r ../quiznet-client-v${{ github.run_number }}-windows.zip . && cd ..
       
       - name: Get current date
         id: date
@@ -154,9 +154,9 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            artifacts/quiznet-server-linux.zip
-            artifacts/quiznet-server-windows.zip
-            artifacts/quiznet-client-linux.zip
-            artifacts/quiznet-client-windows.zip
+            artifacts/quiznet-server-v${{ github.run_number }}-linux.zip
+            artifacts/quiznet-server-v${{ github.run_number }}-windows.zip
+            artifacts/quiznet-client-v${{ github.run_number }}-linux.zip
+            artifacts/quiznet-client-v${{ github.run_number }}-windows.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
