@@ -7,6 +7,8 @@
  * conversion functions for game-related enumerations.
  */
 
+#define _CRT_RAND_S  // Enable rand_s() on Windows
+
 #include "utils.h"
 #include "types.h"
 #include <stdio.h>
@@ -146,23 +148,39 @@ void sha256_hash(const char *input, char *output) {
 /**
  * Initializes the random number generator
  * 
- * Seeds the random number generator with the current time.
+ * Seeds the random number generator. On Windows, rand_s() is used
+ * which doesn't require seeding. On Unix, uses time + microseconds + pid.
  * Should be called once at program startup before using
  * random_int() or shuffle_array().
  */
 void init_random(void) {
-    srand((unsigned int)time(NULL));
+#ifdef _WIN32
+    // rand_s() doesn't need seeding, it uses OS cryptographic RNG
+    log_msg("RANDOM", "Using Windows rand_s() - no seed needed");
+#else
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    unsigned int seed = (unsigned int)(tv.tv_usec + tv.tv_sec + getpid());
+    srand(seed);
+    log_msg("RANDOM", "Random seed initialized: %u", seed);
+#endif
 }
 
 /**
- * Generates a random integer within a specified range
+ * Generates a secure random integer within a specified range
  * 
  * @param min The minimum value (inclusive)
  * @param max The maximum value (inclusive)
  * @return A random integer between min and max (inclusive)
  */
 int random_int(int min, int max) {
+#ifdef _WIN32
+    unsigned int val;
+    rand_s(&val);
+    return min + (int)(val % (unsigned int)(max - min + 1));
+#else
     return min + rand() % (max - min + 1);
+#endif
 }
 
 /**
@@ -175,12 +193,22 @@ int random_int(int min, int max) {
  * @param n Number of elements in the array
  */
 void shuffle_array(int *array, int n) {
+    log_msg("SHUFFLE", "shuffle_array() called with n=%d, first 3 before: [%d, %d, %d]", 
+           n, n > 0 ? array[0] : -1, n > 1 ? array[1] : -1, n > 2 ? array[2] : -1);
     for (int i = n - 1; i > 0; i--) {
+#ifdef _WIN32
+        unsigned int val;
+        rand_s(&val);
+        int j = (int)(val % (unsigned int)(i + 1));
+#else
         int j = rand() % (i + 1);
+#endif
         int temp = array[i];
         array[i] = array[j];
         array[j] = temp;
     }
+    log_msg("SHUFFLE", "shuffle_array() done, first 3 after: [%d, %d, %d]", 
+           n > 0 ? array[0] : -1, n > 1 ? array[1] : -1, n > 2 ? array[2] : -1);
 }
 
 /**
