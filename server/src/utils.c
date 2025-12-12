@@ -320,11 +320,11 @@ const char* difficulty_to_string(int difficulty) {
  * Converts a difficulty string to enum
  */
 int string_to_difficulty(const char* str) {
-  if (str_equals_ignore_case(str, "facile") ||
-      str_equals_ignore_case(str, "easy")) {
+  if (str_equals(str, "facile") ||
+      str_equals(str, "easy")) {
     return DIFFICULTY_EASY;
-  } else if (str_equals_ignore_case(str, "difficile") ||
-             str_equals_ignore_case(str, "hard"))
+  } else if (str_equals(str, "difficile") ||
+             str_equals(str, "hard"))
     return DIFFICULTY_HARD;
   return DIFFICULTY_MEDIUM;
 }
@@ -347,7 +347,7 @@ const char* mode_to_string(int mode) {
  * Converts a game mode string to enum
  */
 int string_to_mode(const char* str) {
-  if (str_equals_ignore_case(str, "battle")) 
+  if (str_equals(str, "battle")) 
     return MODE_BATTLE;
   return MODE_SOLO;
 }
