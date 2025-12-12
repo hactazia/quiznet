@@ -373,6 +373,13 @@ Question* get_current_question(ServerState *state, Session *session) {
 void send_question_to_all(ServerState *state, Session *session) {
     pthread_mutex_lock(&session->mutex);
     
+    // Check if session is still playing
+    if (session->status != SESSION_PLAYING) {
+        log_msg("SESSION", "send_question_to_all() SKIPPED - session not playing (status=%d)", session->status);
+        pthread_mutex_unlock(&session->mutex);
+        return;
+    }
+    
     Question *q = get_current_question(state, session);
     if (!q) {
         log_msg("SESSION", "send_question_to_all() FAILED - no current question");
@@ -453,7 +460,7 @@ void process_answer(ServerState *state, Session *session, int client_id,
     time_t current_time = time(NULL);
     double server_elapsed = difftime(current_time, session->question_start_time);
     
-    if (server_elapsed > session->time_limit + 1) { // 1 second grace period
+    if (server_elapsed > session->time_limit + 1) {
         response_time = session->time_limit + 1;
     }
     
@@ -647,7 +654,16 @@ void send_question_results(ServerState *state, Session *session) {
         #else
         sleep(5);
         #endif
-        advance_to_next_question(state, session);
+        
+        pthread_mutex_lock(&session->mutex);
+        SessionStatus status = session->status;
+        pthread_mutex_unlock(&session->mutex);
+        
+        if (status == SESSION_PLAYING) {
+            advance_to_next_question(state, session);
+        } else {
+            log_msg("SESSION", "Session no longer playing, not advancing to next question");
+        }
     }
 }
 
